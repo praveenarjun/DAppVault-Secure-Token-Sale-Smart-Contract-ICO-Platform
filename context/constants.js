@@ -7,13 +7,13 @@ import erc20 from "./ERC20.json";
 import { sign } from "crypto";
 
 export const TOKEN_ADDRESS = "";
-export const ERC20_ABC = "";
+export const ERC20_ABI = "";
 
 export const OWNER_ADDRESS= "";
 
 export const CONTRACT_ADDRESS ="";
 
-export const CONTRACT_ABI = tokenICO.abi;
+export const CONTRACT_ABI = "";
 
 
 
@@ -214,17 +214,104 @@ export const ERC20 = async() => {
       name: name,
       symbol: symbol,
       decimals:decimals,
-      supply: 
-    }
+      supply: ethers.utils.formatEthers(supply.toString()),
+      balance: ethers.utils.formatEthers(balance.toString),
+      chainId: network.chainId,
+    };
+    console.log(token);
 
-  
-    return contract;
-    
+    return token;
   }
   catch(error){
     console.log(error.message);
 
   }
 }
-const tokenImage =
-      "https://www.daulathussain.com/wp-content/uploads/2024/05/theblockchaincoders.jpg";
+
+export const ERC20_CONTRACT = async(CONTRACT_ADDRESS) => {
+  try{
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal().connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const contract = fetchContract(CONTRACT_ADDRESS,ERC20_ABI,signer);
+    return contract;
+
+  }
+  catch(error){
+    console.log(error.message);
+
+  }
+}
+
+export const GET_BALANCE = async() => {
+  try{
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal().connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const maticBal = await signer.getBalance();
+    return ethers.utils.formatEther(maticBal.toString());
+
+  }
+  catch(error){
+    console.log(error.message);
+
+  }
+}
+
+export const CHECK_ACCOUNT_BALANCE = async(ADDRESS) => {
+  try{
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal().connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    
+
+    const maticBal = await signer.getBalance(ADDRESS);
+    return ethers.utils.formatEther(maticBal.toString());
+
+  }
+  catch(error){
+    console.log(error.message);
+
+  }
+}
+
+
+export const addtokenToMetaMask = async() =>{
+  const tokenImage = "https://www.daulathussain.com/wp-content/uploads/2024/05/theblockchaincoders.jpg";
+  
+  if(window.ethereum){
+    const tokenDetails = await ERC20(TOKEN_ADDRESS);
+
+    const tokenDecimals = tokenDetails?.decimals;
+    const tokenAddress = TOKEN_ADDRESS; 
+    const tokenSymbol = tokenDetails?.symbol;
+    
+    try{
+      const wasAdded = await window.ethereum.request({
+        method: "wallet_watchAsset",
+        params:{
+          type: "ERC20",
+          options:{
+            address: tokenAddress,
+            symbol: tokenSymbol,
+            decimals: tokenDecimals,
+            image: tokenImage,
+          },
+        },
+      });
+      if (wasAdded) {
+        console.log("Token added successfully");
+      } else {
+        console.log("Token not added");
+      }
+    } catch (error) {
+      console.log("Failed to add token:", error.message);
+    }
+  } else{
+    console.log("Please Install MetaMask");
+  }
+};
