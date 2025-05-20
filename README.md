@@ -13,7 +13,7 @@
 
 ## Project Overview
 
-![alt text](https://www.daulathussain.com/wp-content/uploads/2024/05/Build-and-deploy-token-presale-ico-dapp.png)
+![alt text])
 
 
 
@@ -71,10 +71,3 @@ We are using RemixID for deploying the contract and generation of the ABI in the
   OPEN: Polygon Amoy
   URL: https://amoy.polygonscan.com/
 ```
-
-
-## Authors
-
-- [@theblockchaincoders.com](https://www.theblockchaincoders.com/)
-- [@consultancy](https://www.theblockchaincoders.com/consultancy)
-- [@youtube](https://www.youtube.com/@daulathussain)
